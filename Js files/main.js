@@ -4,7 +4,10 @@ var turnO=true
 var newGamebtn= document.querySelector("#new-btn")
 var msgContainer = document.querySelector('.msg-container');
 var msg = document.querySelector('#msg');
- var winPatterns = [
+var scoreX=document.querySelector("#score-x")
+var scoreO=document.querySelector("#score-o")
+
+ var winWays = [
     [0, 1, 2],
     [0, 3, 6],
     [0, 4, 8],
@@ -43,14 +46,19 @@ boxes.forEach((box) => {
     };
     var checkWinner = function(){
         var hasWin = false;
-        for(var pattern of winPatterns){
-            var pos1val = boxes[pattern[0]].innerText;
-            var pos2val = boxes[pattern[1]].innerText;
-            var pos3val = boxes[pattern[2]].innerText;
+        for(var way of winWays){
+            console.log(way)
+            var pos1val = boxes[way[0]].innerText;
+            console.log(pos1val)
+            var pos2val = boxes[way[1]].innerText;
+            console.log(pos2val)
+            var pos3val = boxes[way[2]].innerText;
+            console.log(pos3val)
             if(pos1val !== "" && pos2val !== "" && pos3val !== "" 
                 && pos1val === pos2val && pos2val === pos3val)
             {
                 showWinner(pos1val);
+                scorexo(pos1val)
                 hasWin= true;
                 return;
             }
@@ -63,17 +71,38 @@ boxes.forEach((box) => {
             }
         }
     };
-    var showWinner = (winner) => {
+      var scorexo = function(winner){
+        if(winner === "X"){
+            scoreX.innerText = (parseInt(scoreX.innerText)) + 1;
+        }else if(winner === "O") {
+        scoreO.innerText = (parseInt(scoreO.innerText)) + 1;
+    }
+    }
+    var showWinner = function(winner){
     msg.innerText = `Congratulations, Winner is ${winner}`;
     msgContainer.classList.remove('hide');
+    scorexo(winner)
     disableBoxes();
-};
+    };
+  
+
+var enablescore= function(){
+        scoreO.innerText=0
+        scoreX.innerText=0
+    };
     var restartGame=function(){
         turnO=true;
         enableBoxes();
         msgContainer.classList.add("hide");
+        enablescore()
+
     };
-    newGamebtn.addEventListener("click",restartGame);
+     var newGame=function(){
+        turnO=true;
+        enableBoxes();
+        msgContainer.classList.add("hide");
+    };
+    newGamebtn.addEventListener("click",newGame);
     restartbtn.addEventListener("click",restartGame)
 
 
